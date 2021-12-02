@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
     {% block title %}
     <title>Dealership Review</title>
     {% endblock title %}
@@ -28,9 +29,6 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-                </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Dropdown
@@ -46,14 +44,31 @@
                   <a class="nav-link" href="about" aria-disabled="true">About Us</a>
                 </li>
               </ul>
-              <a class="nav-link" href="contact" tabindex="-1" aria-disabled="true">Contact Us</a>
-              <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <a class="nav-link mr-sm-5" href="contact" tabindex="-1" aria-disabled="true">Contact Us</a>
+              {% if user.is_authenticated %}
+              <li>
+                <span class="navbar-text mr-sm-2">Username: {{ user.username }} </span>
+                <a class="btn btn-outline-danger my-2 my-sm-0" href="{% url 'djangoapp:logout' %}">Logout</a>
+              </li>
+              {% else %}
+              <form class="form-inline my-2 my-lg-0" action="{% url 'djangoapp:login' %}" method="post" novalidate>
+                {% csrf_token %}
+                <input type="text" class="form-control mr-sm-2" name="username" placeholder="Username" aria-describedby="validationTooltipUsernamePrepend" required>
+                <input type="password" class="form-control mr-sm-2" name="password" placeholder="Password">
+                <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Log In</button>
+                <a class="btn btn-outline-info my-2 my-sm-0" href="{% url 'djangoapp:registration' %}">Sign Up</a>
               </form>
+              {% endif %}
             </div>
           </nav>
-        
+          {% if message %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>{{ message }}</strong>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          {% endif %}
           {% block content %}
 
           {% endblock content %}
