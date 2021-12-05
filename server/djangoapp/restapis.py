@@ -48,7 +48,6 @@ def get_dealers_from_cf(url,st, **kwargs):
                                    short_name=dealer_doc["short_name"],
                                    st=dealer_doc["st"], zip=dealer_doc["zip"],state=dealer_doc["state"])
             results.append(dealer_obj)
-    print(results)
     return results
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
@@ -80,7 +79,6 @@ def get_dealer_reviews_from_cf(url,dealership, **kwargs):
                 sentiment="placeholder")
             review_obj.sentiment = analyze_review_sentiments(review_obj.review)
             results.append(review_obj)
-            print(review_obj)
     return results
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
@@ -101,7 +99,6 @@ def analyze_review_sentiments(text):
   
   respuesta1 = response["sentiment"]
   respuesta2 = respuesta1["document"]
-  print(respuesta2["label"])
   return(respuesta2["label"])
   
   
