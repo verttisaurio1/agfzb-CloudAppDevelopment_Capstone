@@ -5,5 +5,7 @@
 
 {% block content %}
    <!--Add a dealer table here -->
-   <h1>this is supposed to be a table v2</h1>
+   {% for dealer in dealerships %}
+        <p>Hi i am {{dealer.full_name}}, my id is {{dealer.id}}</p>
+   {% endfor %}
 {% endblock content %}

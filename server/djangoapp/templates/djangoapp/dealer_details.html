@@ -12,6 +12,11 @@
     <!--Add a nav bar here -->
 
     <!-- Add reviews as cards -->
+    {% for review in reviews %}
+        <p>name: {{review.name}}</p>
+        <p>review: {{review.review}}</p>
+        <hr>
+    {% endfor %}
 
     </body>
 
