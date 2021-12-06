@@ -102,11 +102,16 @@ def get_dealer_details(request, dealer_id):
         
         reviews = get_dealer_reviews_from_cf(url,dealer_id)
         context['reviews'] = reviews
-     
+        context['dealer_id'] = dealer_id
         return render(request, 'djangoapp/dealer_details.html', context)
         #return HttpResponse(reviews)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
-
+def add_review(request, dealer_id):
+    print(f"dealer_id en view{dealer_id}")
+    context = {}
+    context["dealer_id"] = dealer_id
+    if request.method == "GET":
+        return render(request, 'djangoapp/add_review.html', context)
+    elif request.method == "POST":
+        return redirect("djangoapp:dealer_details", dealer_id=dealer_id)

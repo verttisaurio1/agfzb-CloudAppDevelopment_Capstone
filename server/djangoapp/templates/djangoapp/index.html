@@ -21,7 +21,7 @@
         {% for dealer in dealerships %}
           <tr>
             <th scope="row">{{dealer.id}}</th>
-            <td><a href="">{{dealer.full_name}}</a></td>
+            <td><a href="dealer/{{dealer.id}}">{{dealer.full_name}}</a></td>
             <td>{{dealer.city}}</td>
             <td>{{dealer.address}}</td>
             <td>{{dealer.zip}}</td>

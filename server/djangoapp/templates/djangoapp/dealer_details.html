@@ -8,13 +8,13 @@
     <div class="card-columns">
       {% for review in reviews %}
         {% if review.purchase %}
-          <div class="card text-white bg-secondary" style="max-width: 300px;" >
+          <div class="card text-white bg-secondary" style="width: 300px; lenght: 100px" >
             {% if review.sentiment == "positive" %}
-              <img class="card-img-left" src="{% static '/media/emoji/positive.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png" style="width:2rem;height:2rem;">
             {% elif review.sentiment == "neutral"%}
-              <img class="card-img-left" src="{% static '/media/emoji/neutral.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png" style="width:2rem;height:2rem;">
             {% else %}
-              <img class="card-img-left" src="{% static '/media/emoji/negative.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png"  style="width:2rem;height:2rem;">
             {% endif %}
               <div class="card-body">
                 <h5 class="card-title">{{ review.car_make }}, {{ review.car_model }}</h5>
@@ -23,13 +23,13 @@
               <p class="card-text">{{ review.review }}</p>
           </div>
         {% else %}
-          <div class="card text-white bg-secondary" style="max-width: 300px;">
+          <div class="card text-white bg-secondary" style="width: 300px; lenght: 100px" >
             {% if review.sentiment == "positive" %}  
-              <img class="card-img-left" src="{% static '/media/emoji/positive.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png"  style="width:2rem;height:2rem;">
             {% elif review.sentiment == "neutral"%}
-              <img class="card-img-left" src="{% static '/media/emoji/neutral.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png" style="width:2rem;height:2rem;" >
             {% else %}
-              <img class="card-img-left" src="{% static '/media/emoji/negative.png' %}">
+              <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png"  style="width:2rem;height:2rem;">
             {% endif %}
               <div class="card-body">
                 <h5 class="card-title">No car purchased.</h5>
@@ -39,4 +39,11 @@
         {% endif %}
       {% endfor %}
     </div>
+    <div class="jumbotron text-white bg-secondary ">
+        <h1 class="display-4">Hello, there!</h1>
+        <p class="lead">In our company costumer feedback is very important, we are working hard to make the costumer experience as good as it can be.</p>
+        <hr class="my-4">
+        <p>If you would like to submit a review to this dealership please press the button below!!.</p>
+        <a class="btn btn-primary btn-lg" href="add_review" role="button">Add review</a>
+      </div>
 {% endblock content %}
