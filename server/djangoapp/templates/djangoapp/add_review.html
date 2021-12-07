@@ -1,36 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
+      rel="stylesheet"
+    />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-    <style>body{background-color: "#353A40"}</style>
-</head>
-    <body>
+    <style>
+      body {
+        background-color: #353a40;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
     <!--Add review form here -->
-      <h1 style="text-color:'white'">Add a review about {{dealership.full_name}}</h1>
-      <hr>
-      <form action="{% url 'djangoapp:add_review' dealer_id %}">
-        <label for="content"><strong>enter the review content</strong></label>
-        <textarea class="form-control" id="content" name="content" rows="2" required>
-        </textarea>
-        <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
-        <select name="car" id="car" class="form-select" required>
-          {% for car in cars %}
-            <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
-          {% endfor %}
-          <input class="date-own form-control" type="text" name="purchasedate" id="purchasedate">
-          <button class="btn btn-outline-success my-2 my-sm-0 mr-sm-2" type="submit">Submit</button>
-   </select>
-        </form>
-    </body>
-    <script type="text/javascript">
-        $('.date-own').datepicker({
-           format: 'mm/dd/yyyy'
-         });
-   </script>
+    <h1 style="text-color: 'white'">
+      Add a review about {{dealership.full_name}}
+    </h1>
+    <hr style="background-color: white" />
+    <form action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
+      {% csrf_token %}
+      <div class="ml-sm-5 mr-sm-5">
+      <div class="form-group ">
+      <label for="content"><strong>enter the review content</strong></label>
+      <textarea
+        class="form-control"
+        id="content"
+        name="review"
+        rows="2"
+        required
+      ></textarea>
+    </div>
+      <div class="form-group form-check">
+        <input type="hidden" id="purchasecheck" name="purchase" value="0"><input type="checkbox" onclick='this.previousSibling.value=1-this.previousSibling.value'>
+        <label class="form-check-label" for="purchasecheck">
+          Has purchased a car from {{dealership.full_name}}?
+          <small class="text-muted"
+            >(Select purchased car information below if checked)</small
+          >
+        </label>
+      </div>
+       <div class="form-group">
+    <label for="car">Select your car: <small class="text-muted"
+            >(model-maker-year)</small></label>
+    <select multiple class="form-control" id="car" name="car" required>
+      {% for car in cars %}
+        <option selected value="{{car.name}}-{{car.maker.name}}-{{ car.year|date:'Y' }}" >
+          {{car.name}}-{{car.maker.name}}-{{ car.year|date:"Y" }}
+        </option>
+      {% endfor %}
+    </select>
+    </div>
+        
+        <div class="form-group ">
+          <label for="purchasedate"><strong>Select your purchase date<small class="text-muted"
+            >(if purchased)</small
+          >:</strong></label>
+        <input
+          class="date-own form-control"
+          type="text"
+          name="purchase_date"
+          id="purchasedate"
+        />
+      </div>
+        <button
+          class="btn btn-outline-success my-2 my-sm-0 mr-sm-2"
+          type="submit"
+        >
+          Submit
+        </button>
+      </select>
+      </div>
+    </form>
+  </body>
+  <script type="text/javascript">
+    $(".date-own").datepicker({
+      format: "mm/dd/yyyy",
+    });
+  </script>
 </html>

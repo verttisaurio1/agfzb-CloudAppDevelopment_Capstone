@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
-from .models import CarModel, CarMake
-from .restapis import get_dealers_from_cf,get_dealer_reviews_from_cf
+from django.shortcuts import get_object_or_404,get_list_or_404, render, redirect
+from .models import CarModel, CarMake, DealerReview
+from .restapis import get_dealers_from_cf,get_dealer_reviews_from_cf,post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -110,8 +110,38 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     print(f"dealer_id en view{dealer_id}")
     context = {}
-    context["dealer_id"] = dealer_id
     if request.method == "GET":
+        url = "https://e5c32eaa.us-south.apigw.appdomain.cloud/capstone/dealerships"
+        dealerships = get_dealers_from_cf(url,"")
+        for dealer in dealerships:
+            if dealer.id == dealer_id:
+                dealership = dealer
+        car = get_list_or_404(CarModel, Dealer_id=dealer_id)
+        context["dealer_id"] = dealer_id
+        context["cars"] = car
+        context["dealership"] = dealership
         return render(request, 'djangoapp/add_review.html', context)
     elif request.method == "POST":
+        url = "https://e5c32eaa.us-south.apigw.appdomain.cloud/capstone/reviews"
+        params={}
+        if request.POST["purchase"] == "1":
+            params["name"] = f"{request.user.first_name} {request.user.last_name}"
+            params["dealership"] = dealer_id
+            params["review"] = request.POST["review"]
+            params["purchase"] = True
+            params["purchase_date"] = request.POST["purchase_date"]
+            car = request.POST["car"].split("-")
+            params["car_make"] = car[1]
+            params["car_model"] = car[0]
+            params["car_year"] = car[2]
+        else:
+            params["name"] = f"{request.user.first_name} {request.user.last_name}"
+            params["dealership"] = dealer_id
+            params["review"] = request.POST["review"]
+            params["purchase"] = False
+        review = {"review":params}
+        print(request.POST["purchase"])
+        response = post_request(url,review,dealer_id=dealer_id)
+        if response:
+            print(response)
         return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
