@@ -68,12 +68,17 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about" aria-disabled="true">About Us</a>
+            <a
+              class="nav-link"
+              href="{% url 'djangoapp:about' %}"
+              aria-disabled="true"
+              >About Us</a
+            >
           </li>
         </ul>
         <a
           class="nav-link mr-sm-5"
-          href="contact"
+          href="{% url 'djangoapp:contact' %}"
           tabindex="-1"
           aria-disabled="true"
           >Contact Us</a
